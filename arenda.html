@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/pop.css">
+    <title>Звук под ключ - Аренда профессионального оборудования</title>
+    <link rel="icon" href="img/logo.jpg" type="image/png">
+    <link rel="apple-touch-icon" href="img/logo.jpg ">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .contain {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            color: #222;
+        }
+        
+        h2 {
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+            color: #444;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .cards-container {
+            position: relative;
+            overflow: hidden;
+            padding: 0 40px;
+        }
+        
+        .cards-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-right: 15px;
+            flex: 0 0 calc(33.33% - 10px);
+            transition: transform 0.3s;
+        }
+        
+        .card:last-child {
+            margin-right: 0;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1;
+            border: none;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .nav-btn:hover {
+            background: #f1f1f1;
+        }
+        
+        .prev {
+            left: 0;
+        }
+        
+        .next {
+            right: 0;
+        }
+        
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background: #3498db;
+        }
+        
+        @media (max-width: 992px) {
+            .card {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .card {
+                flex: 0 0 calc(100% - 10px);
+            }
+            
+            .cards-container {
+                padding: 0 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="contain">
+            <div class="header-content">
+                <div class="logo">Звук под ключ</div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="arenda.html">Аренда</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#contact">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Аренда оборудования</h1>
+        
+        <!-- Секция аренды сцен -->
+        <div class="section">
+            <h2>Аренда сцен</h2>
+            <div class="cards-container">
+                <button class="nav-btn prev" onclick="moveSlide('stages', -1)">&#10094;</button>
+                <div class="cards-wrapper" id="stages-cards">
+                    <!-- Карточки будут добавлены через JavaScript -->
+                </div>
+                <button class="nav-btn next" onclick="moveSlide('stages', 1)">&#10095;</button>
+                <div class="dots" id="stages-dots"></div>
+            </div>
+        </div>
+        
+        <!-- Секция аренды экранов -->
+        <div class="section">
+            <h2>Аренда экранов</h2>
+            <div class="cards-container">
+                <button class="nav-btn prev" onclick="moveSlide('screens', -1)">&#10094;</button>
+                <div class="cards-wrapper" id="screens-cards">
+                    <!-- Карточки будут добавлены через JavaScript -->
+                </div>
+                <button class="nav-btn next" onclick="moveSlide('screens', 1)">&#10095;</button>
+                <div class="dots" id="screens-dots"></div>
+            </div>
+        </div>
+        
+        <!-- Секция аренды звука -->
+        <div class="section">
+            <h2>Аренда звукового оборудования</h2>
+            <div class="cards-container">
+                <button class="nav-btn prev" onclick="moveSlide('sound', -1)">&#10094;</button>
+                <div class="cards-wrapper" id="sound-cards">
+                    <!-- Карточки будут добавлены через JavaScript -->
+                </div>
+                <button class="nav-btn next" onclick="moveSlide('sound', 1)">&#10095;</button>
+                <div class="dots" id="sound-dots"></div>
+            </div>
+        </div>
+        
+        <!-- Секция аренды света -->
+        <div class="section">
+            <h2>Аренда светового оборудования</h2>
+            <div class="cards-container">
+                <button class="nav-btn prev" onclick="moveSlide('light', -1)">&#10094;</button>
+                <div class="cards-wrapper" id="light-cards">
+                    <!-- Карточки будут добавлены через JavaScript -->
+                </div>
+                <button class="nav-btn next" onclick="moveSlide('light', 1)">&#10095;</button>
+                <div class="dots" id="light-dots"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <p>г. Москва, ул. Примерная, 123</p>
+                    <p>+7 (123) 456-78-90</p>
+                    <p>info@avrental.ru</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Соцсети</h3>
+                    <div class="social-icons">
+                        <a href="https://vk.com/zvukpodkluch?t2fs=01cdc6cbb572e7546e_3" target="_blank">
+                            <img src="img/vk.png" alt="ВКонтакте" width="40">
+                        </a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Звук под ключ. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Данные для карточек
+        const equipmentData = {
+            stages: [
+                { id: 1, name: "Сцена 3x4м", description: "Мобильная сцена для мероприятий", price: "5000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Сцена+3x4м" },
+                { id: 2, name: "Сцена 5x3м", description: "Профессиональная сцена с ограждением", price: "7500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Сцена+5x3м" },
+                { id: 3, name: "Сцена 6x4м", description: "Большая сцена для концертов", price: "10000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Сцена+6x4м" },
+                { id: 4, name: "Сцена 8x5м", description: "Премиум сцена с крышей", price: "15000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Сцена+8x5м" }
+            ],
+            screens: [
+                { id: 1, name: "Экран 3x2м", description: "Мобильный экран на растяжках", price: "3000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Экран+3x2м" },
+                { id: 2, name: "Экран 4x3м", description: "Профессиональный экран с креплением", price: "4500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Экран+4x3м" },
+                { id: 3, name: "Экран 5x3м", description: "Большой экран для мероприятий", price: "6000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Экран+5x3м" },
+                { id: 4, name: "LED экран P3", description: "Высококачественный LED экран", price: "12000 руб./сутки", image: "https://via.placeholder.com/300x180?text=LED+экран+P3" },
+                { id: 5, name: "LED экран P4", description: "Яркий LED экран для улицы", price: "10000 руб./сутки", image: "https://via.placeholder.com/300x180?text=LED+экран+P4" },
+                { id: 6, name: "Экран 6x4м", description: "Огромный экран для стадионов", price: "15000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Экран+6x4м" },
+                { id: 7, name: "Экран 2x1.5м", description: "Компактный экран для помещений", price: "2000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Экран+2x1.5м" },
+                { id: 8, name: "LED экран P5", description: "Экономичный LED экран", price: "8000 руб./сутки", image: "https://via.placeholder.com/300x180?text=LED+экран+P5" }
+            ],
+            sound: [
+                { id: 1, name: "Комплект звука 1кВт", description: "Базовый комплект для мероприятий", price: "4000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Звук+1кВт" },
+                { id: 2, name: "Комплект звука 2кВт", description: "Профессиональный звук для залов", price: "6000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Звук+2кВт" },
+                { id: 3, name: "Комплект звука 5кВт", description: "Мощный звук для концертов", price: "10000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Звук+5кВт" },
+                { id: 4, name: "Микшерный пульт", description: "16-канальный микшерный пульт", price: "2500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Микшерный+пульт" },
+                { id: 5, name: "Радиосистема", description: "Комплект радиомикрофонов", price: "2000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Радиосистема" }
+            ],
+            light: [
+                { id: 1, name: "Прожектор LED 100Вт", description: "Яркий LED прожектор", price: "1000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Прожектор+LED" },
+                { id: 2, name: "Стробоскоп", description: "Профессиональный стробоскоп", price: "1500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Стробоскоп" },
+                { id: 3, name: "Лазерная установка", description: "RGB лазер с дымом", price: "3000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Лазерная+установка" },
+                { id: 4, name: "Диммерный комплект", description: "Комплект для управления светом", price: "2500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Диммерный+комплект" },
+                { id: 5, name: "Головка Moving", description: "Интеллектуальный Moving Head", price: "3500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Moving+Head" },
+                { id: 6, name: "Сканер", description: "Световой сканер с гобо", price: "2000 руб./сутки", image: "https://via.placeholder.com/300x180?text=Сканер" },
+                { id: 7, name: "Дым машина", description: "Профессиональная дым машина", price: "1500 руб./сутки", image: "https://via.placeholder.com/300x180?text=Дым+машина" }
+            ]
+        };
+
+        // Состояния для каруселей
+        const carouselState = {
+            stages: { currentIndex: 0, visibleCards: 3 },
+            screens: { currentIndex: 0, visibleCards: 3 },
+            sound: { currentIndex: 0, visibleCards: 3 },
+            light: { currentIndex: 0, visibleCards: 3 }
+        };
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Заполняем все карточки
+            renderCards('stages', equipmentData.stages);
+            renderCards('screens', equipmentData.screens);
+            renderCards('sound', equipmentData.sound);
+            renderCards('light', equipmentData.light);
+            
+            // Создаем точки навигации
+            createDots('stages', equipmentData.stages.length);
+            createDots('screens', equipmentData.screens.length);
+            createDots('sound', equipmentData.sound.length);
+            createDots('light', equipmentData.light.length);
+            
+            // Обновляем видимость кнопок навигации
+            updateNavButtons();
+        });
+
+        // Функция для отрисовки карточек
+        function renderCards(sectionId, items) {
+            const container = document.getElementById(`${sectionId}-cards`);
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <div class="price">${item.price}</div>
+                    <a href="#" class="btn">Заказать</a>
+                `;
+                container.appendChild(card);
+            });
+            
+            updateCarouselPosition(sectionId);
+        }
+
+        // Функция для создания точек навигации
+        function createDots(sectionId, totalItems) {
+            const dotsContainer = document.getElementById(`${sectionId}-dots`);
+            dotsContainer.innerHTML = '';
+            
+            const totalDots = Math.max(totalItems - carouselState[sectionId].visibleCards + 1, 1);
+            
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => {
+                    carouselState[sectionId].currentIndex = i;
+                    updateCarouselPosition(sectionId);
+                    updateDots(sectionId);
+                    updateNavButtons();
+                });
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Функция для обновления позиции карусели
+        function updateCarouselPosition(sectionId) {
+            const container = document.getElementById(`${sectionId}-cards`);
+            const cardWidth = container.querySelector('.card').offsetWidth + 15; // 15px margin-right
+            const offset = -carouselState[sectionId].currentIndex * cardWidth;
+            container.style.transform = `translateX(${offset}px)`;
+        }
+
+        // Функция для обновления активных точек
+        function updateDots(sectionId) {
+            const dots = document.querySelectorAll(`#${sectionId}-dots .dot`);
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === carouselState[sectionId].currentIndex);
+            });
+        }
+
+        // Функция для обновления видимости кнопок навигации
+        function updateNavButtons() {
+            Object.keys(carouselState).forEach(sectionId => {
+                const state = carouselState[sectionId];
+                const totalItems = equipmentData[sectionId].length;
+                const maxIndex = Math.max(totalItems - state.visibleCards, 0);
+                
+                const prevBtn = document.querySelector(`#${sectionId}-cards`).previousElementSibling;
+                const nextBtn = document.querySelector(`#${sectionId}-cards`).nextElementSibling;
+                
+                prevBtn.style.display = state.currentIndex === 0 ? 'none' : 'flex';
+                nextBtn.style.display = state.currentIndex >= maxIndex ? 'none' : 'flex';
+            });
+        }
+
+        // Функция для перемещения слайдов
+        function moveSlide(sectionId, direction) {
+            const totalItems = equipmentData[sectionId].length;
+            const maxIndex = Math.max(totalItems - carouselState[sectionId].visibleCards, 0);
+            
+            carouselState[sectionId].currentIndex += direction;
+            
+            // Проверка границ
+            if (carouselState[sectionId].currentIndex < 0) {
+                carouselState[sectionId].currentIndex = 0;
+            } else if (carouselState[sectionId].currentIndex > maxIndex) {
+                carouselState[sectionId].currentIndex = maxIndex;
+            }
+            
+            updateCarouselPosition(sectionId);
+            updateDots(sectionId);
+            updateNavButtons();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.querySelector('.carousel-container');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.querySelector('.carousel-prev');
+        const nextBtn = document.querySelector('.carousel-next');
+        const dotsContainer = document.querySelector('.carousel-dots');
+        
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        
+        // Создаем точки навигации
+        slides.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
+            dotsContainer.appendChild(dot);
+        });
+        
+        const dots = document.querySelectorAll('.carousel-dots span');
+        dots[0].classList.add('active');
+        
+        // Функция перехода к слайду
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+        
+        // Обновление карусели
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            // Обновляем активную точку
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+        
+        // Кнопка "Назад"
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        });
+        
+        // Кнопка "Вперед"
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        });
+        
+        // Автопрокрутка (опционально)
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        }, 5000);
+    });
+    document.getElementById('equipment').addEventListener('change', function() {
+        if(this.value === 'stage') {
+            // Показать дополнительные поля для сцены
+            document.getElementById('stage-options').style.display = 'block';
+        } else {
+            document.getElementById('stage-options').style.display = 'none';
+        }
+    });
