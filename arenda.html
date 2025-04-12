@@ -20,17 +20,6 @@
             color: #333;
             line-height: 1.6;
         }
-        .contain {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
         
         .container {
             max-width: 1200px;
@@ -59,7 +48,7 @@
         .cards-container {
             position: relative;
             overflow: hidden;
-            padding: 0 40px;
+            padding: 0 50px;
         }
         
         .cards-wrapper {
@@ -73,16 +62,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin-right: 15px;
-            flex: 0 0 calc(33.33% - 10px);
-            transition: transform 0.3s;
+            flex: 0 0 calc(25% - 15px);
+            transition: all 0.3s;
         }
         
-        .card:last-child {
-            margin-right: 0;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
+        .card.active {
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         
@@ -158,45 +142,32 @@
             right: 0;
         }
         
-        .dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .dot {
-            width: 12px;
-            height: 12px;
-            background: #ccc;
-            border-radius: 50%;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        
-        .dot.active {
-            background: #3498db;
-        }
-        
         @media (max-width: 992px) {
             .card {
-                flex: 0 0 calc(50% - 10px);
+                flex: 0 0 calc(33.33% - 15px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .card {
+                flex: 0 0 calc(50% - 15px);
             }
         }
         
         @media (max-width: 576px) {
             .card {
-                flex: 0 0 calc(100% - 10px);
+                flex: 0 0 calc(100% - 15px);
             }
             
             .cards-container {
-                padding: 0 30px;
+                padding: 0 40px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="contain">
+        <div class="container">
             <div class="header-content">
                 <div class="logo">Звук под ключ</div>
                 <nav>
@@ -218,11 +189,8 @@
             <h2>Аренда сцен</h2>
             <div class="cards-container">
                 <button class="nav-btn prev" onclick="moveSlide('stages', -1)">&#10094;</button>
-                <div class="cards-wrapper" id="stages-cards">
-                    <!-- Карточки будут добавлены через JavaScript -->
-                </div>
+                <div class="cards-wrapper" id="stages-cards"></div>
                 <button class="nav-btn next" onclick="moveSlide('stages', 1)">&#10095;</button>
-                <div class="dots" id="stages-dots"></div>
             </div>
         </div>
         
@@ -231,11 +199,8 @@
             <h2>Аренда экранов</h2>
             <div class="cards-container">
                 <button class="nav-btn prev" onclick="moveSlide('screens', -1)">&#10094;</button>
-                <div class="cards-wrapper" id="screens-cards">
-                    <!-- Карточки будут добавлены через JavaScript -->
-                </div>
+                <div class="cards-wrapper" id="screens-cards"></div>
                 <button class="nav-btn next" onclick="moveSlide('screens', 1)">&#10095;</button>
-                <div class="dots" id="screens-dots"></div>
             </div>
         </div>
         
@@ -244,11 +209,8 @@
             <h2>Аренда звукового оборудования</h2>
             <div class="cards-container">
                 <button class="nav-btn prev" onclick="moveSlide('sound', -1)">&#10094;</button>
-                <div class="cards-wrapper" id="sound-cards">
-                    <!-- Карточки будут добавлены через JavaScript -->
-                </div>
+                <div class="cards-wrapper" id="sound-cards"></div>
                 <button class="nav-btn next" onclick="moveSlide('sound', 1)">&#10095;</button>
-                <div class="dots" id="sound-dots"></div>
             </div>
         </div>
         
@@ -257,11 +219,8 @@
             <h2>Аренда светового оборудования</h2>
             <div class="cards-container">
                 <button class="nav-btn prev" onclick="moveSlide('light', -1)">&#10094;</button>
-                <div class="cards-wrapper" id="light-cards">
-                    <!-- Карточки будут добавлены через JavaScript -->
-                </div>
+                <div class="cards-wrapper" id="light-cards"></div>
                 <button class="nav-btn next" onclick="moveSlide('light', 1)">&#10095;</button>
-                <div class="dots" id="light-dots"></div>
             </div>
         </div>
     </div>
@@ -330,10 +289,10 @@
 
         // Состояния для каруселей
         const carouselState = {
-            stages: { currentIndex: 0, visibleCards: 3 },
-            screens: { currentIndex: 0, visibleCards: 3 },
-            sound: { currentIndex: 0, visibleCards: 3 },
-            light: { currentIndex: 0, visibleCards: 3 }
+            stages: { currentIndex: 0 },
+            screens: { currentIndex: 0 },
+            sound: { currentIndex: 0 },
+            light: { currentIndex: 0 }
         };
 
         // Инициализация страницы
@@ -344,14 +303,11 @@
             renderCards('sound', equipmentData.sound);
             renderCards('light', equipmentData.light);
             
-            // Создаем точки навигации
-            createDots('stages', equipmentData.stages.length);
-            createDots('screens', equipmentData.screens.length);
-            createDots('sound', equipmentData.sound.length);
-            createDots('light', equipmentData.light.length);
+            // Активируем видимые карточки
+            activateVisibleCards();
             
-            // Обновляем видимость кнопок навигации
-            updateNavButtons();
+            // Обновляем при изменении размера окна
+            window.addEventListener('resize', activateVisibleCards);
         });
 
         // Функция для отрисовки карточек
@@ -359,9 +315,13 @@
             const container = document.getElementById(`${sectionId}-cards`);
             container.innerHTML = '';
             
-            items.forEach(item => {
+            // Клонируем карточки для бесконечной карусели
+            const cardsToShow = [...items, ...items, ...items];
+            
+            cardsToShow.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'card';
+                card.dataset.index = index % items.length;
                 card.innerHTML = `
                     <img src="${item.image}" alt="${item.name}">
                     <h3>${item.name}</h3>
@@ -372,27 +332,39 @@
                 container.appendChild(card);
             });
             
+            // Устанавливаем начальную позицию
+            const middleSet = items.length; // Начинаем со второго набора карточек
+            carouselState[sectionId].currentIndex = middleSet;
             updateCarouselPosition(sectionId);
         }
 
-        // Функция для создания точек навигации
-        function createDots(sectionId, totalItems) {
-            const dotsContainer = document.getElementById(`${sectionId}-dots`);
-            dotsContainer.innerHTML = '';
-            
-            const totalDots = Math.max(totalItems - carouselState[sectionId].visibleCards + 1, 1);
-            
-            for (let i = 0; i < totalDots; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'dot' + (i === 0 ? ' active' : '');
-                dot.addEventListener('click', () => {
-                    carouselState[sectionId].currentIndex = i;
-                    updateCarouselPosition(sectionId);
-                    updateDots(sectionId);
-                    updateNavButtons();
+        // Функция для активации видимых карточек
+        function activateVisibleCards() {
+            Object.keys(carouselState).forEach(sectionId => {
+                const container = document.getElementById(`${sectionId}-cards`);
+                const cards = container.querySelectorAll('.card');
+                const containerRect = container.getBoundingClientRect();
+                const visibleCardsCount = getVisibleCardsCount();
+                
+                cards.forEach(card => {
+                    card.classList.remove('active');
+                    const cardRect = card.getBoundingClientRect();
+                    
+                    // Проверяем, видна ли карточка в контейнере
+                    if (cardRect.right > containerRect.left && cardRect.left < containerRect.right) {
+                        card.classList.add('active');
+                    }
                 });
-                dotsContainer.appendChild(dot);
-            }
+            });
+        }
+
+        // Функция для определения количества видимых карточек
+        function getVisibleCardsCount() {
+            const width = window.innerWidth;
+            if (width < 576) return 1;
+            if (width < 768) return 2;
+            if (width < 992) return 3;
+            return 4;
         }
 
         // Функция для обновления позиции карусели
@@ -401,48 +373,41 @@
             const cardWidth = container.querySelector('.card').offsetWidth + 15; // 15px margin-right
             const offset = -carouselState[sectionId].currentIndex * cardWidth;
             container.style.transform = `translateX(${offset}px)`;
-        }
-
-        // Функция для обновления активных точек
-        function updateDots(sectionId) {
-            const dots = document.querySelectorAll(`#${sectionId}-dots .dot`);
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === carouselState[sectionId].currentIndex);
-            });
-        }
-
-        // Функция для обновления видимости кнопок навигации
-        function updateNavButtons() {
-            Object.keys(carouselState).forEach(sectionId => {
-                const state = carouselState[sectionId];
-                const totalItems = equipmentData[sectionId].length;
-                const maxIndex = Math.max(totalItems - state.visibleCards, 0);
-                
-                const prevBtn = document.querySelector(`#${sectionId}-cards`).previousElementSibling;
-                const nextBtn = document.querySelector(`#${sectionId}-cards`).nextElementSibling;
-                
-                prevBtn.style.display = state.currentIndex === 0 ? 'none' : 'flex';
-                nextBtn.style.display = state.currentIndex >= maxIndex ? 'none' : 'flex';
-            });
+            
+            // Активируем видимые карточки
+            setTimeout(activateVisibleCards, 50);
         }
 
         // Функция для перемещения слайдов
         function moveSlide(sectionId, direction) {
-            const totalItems = equipmentData[sectionId].length;
-            const maxIndex = Math.max(totalItems - carouselState[sectionId].visibleCards, 0);
+            const items = equipmentData[sectionId];
+            const container = document.getElementById(`${sectionId}-cards`);
+            const totalCards = container.querySelectorAll('.card').length;
             
             carouselState[sectionId].currentIndex += direction;
             
-            // Проверка границ
+            // Бесконечная прокрутка
             if (carouselState[sectionId].currentIndex < 0) {
-                carouselState[sectionId].currentIndex = 0;
-            } else if (carouselState[sectionId].currentIndex > maxIndex) {
-                carouselState[sectionId].currentIndex = maxIndex;
+                carouselState[sectionId].currentIndex = totalCards - items.length - 1;
+                // Мгновенный переход без анимации
+                container.style.transition = 'none';
+                updateCarouselPosition(sectionId);
+                // Возвращаем анимацию
+                setTimeout(() => {
+                    container.style.transition = 'transform 0.5s ease';
+                }, 10);
+            } else if (carouselState[sectionId].currentIndex > totalCards - items.length) {
+                carouselState[sectionId].currentIndex = items.length;
+                // Мгновенный переход без анимации
+                container.style.transition = 'none';
+                updateCarouselPosition(sectionId);
+                // Возвращаем анимацию
+                setTimeout(() => {
+                    container.style.transition = 'transform 0.5s ease';
+                }, 10);
             }
             
             updateCarouselPosition(sectionId);
-            updateDots(sectionId);
-            updateNavButtons();
         }
     </script>
 </body>
